@@ -1,15 +1,13 @@
 services:
   tailscale:
     build: ./tailscale
-    environment:
-      TS_AUTHKEY: "tskey-auth-<TAILSCALE_KEY>"
-      TS_STATE_DIR: /var/lib/tailscale
-      TS_USERSPACE: 1
-      TS_EXTRA_ARGS: --hostname=misskey
+    env_file: ./tailscale/.env
     volumes:
       - ./tailscale/state/misskey:/var/lib/tailscale
     command:
       - /opt/bin/run.sh
+    devices:
+      - /dev/net/tun:/dev/net/tun
 
   misskey:
     container_name: misskey
@@ -22,8 +20,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    ports:
-      - "3000:3000"
     network_mode: "service:tailscale"
     volumes:
       - ./misskey/files:/misskey/files
@@ -39,9 +35,6 @@ services:
       test: "redis-cli ping"
       interval: 5s
       retries: 20
-    network_mode: "service:tailscale"
-    depends_on:
-      - tailscale
 
   db:
     container_name: db
@@ -55,6 +48,3 @@ services:
       test: "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"
       interval: 5s
       retries: 20
-    network_mode: "service:tailscale"
-    depends_on:
-      - tailscale

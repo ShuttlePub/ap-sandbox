@@ -8,7 +8,7 @@
 1. Clone [Misskey (master)](https://github.com/misskey-dev/misskey/tree/master)
     * Copy the files with reference to [Install Guide (Misskey)](https://misskey-hub.net/ja/docs/for-admin/install/guides/docker/)
 
-2. Edit `TS_AUTHKEY` of `compose.yml`
+2. Copy `tailscale/.env.example` to `tailscale/.env` and edit `TS_AUTHKEY`
     * https://login.tailscale.com/admin/settings/keys
 
 3. Enable `allowedPrivateNetworks` by editing `/misskey/.config/default.yml`.
