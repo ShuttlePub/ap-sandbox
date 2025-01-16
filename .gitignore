@@ -1,0 +1,4 @@
+.direnv
+misskey
+.env
+redis
